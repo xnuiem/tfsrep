@@ -1,0 +1,8 @@
+requests
+coverage
+ddt
+xmlrunner
+requests-ntlm
+redis
+dohq-tfs
+cassandra-driver
