@@ -1,5 +1,4 @@
 from tfsrep.lib.session import Session
-from pprint import pprint
 
 
 class TFSData:

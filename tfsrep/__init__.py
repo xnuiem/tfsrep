@@ -1,6 +1,8 @@
 import logging, os
+import jinja2
 from tfsrep.lib.error import InvalidUsage
 from tfsrep.lib.report_results import ReportResults
+from tfsrep.lib.assets import Assets
 
 
 class TFSReports:
@@ -38,6 +40,7 @@ class TFSReports:
         self.config.api_collection = os.getenv('API_COLLECTION', 'DefaultCollection')
         self.config.api_project = os.getenv('API_PROJECT', None)
         self.config.cassandra_keyspace = os.getenv('CASSANDRA_KEYSPACE', 'tfsrep')
+        self.config.template_file = os.getenv('TEMPLATE_FILE', 'index.html')
 
         nodes = os.getenv('CASSANDRA_NODES', None)
         if nodes is None:
@@ -57,6 +60,39 @@ class TFSReports:
             exit(1)
 
 
+    def get_template(self):
+
+        team = type("team", (), {})
+        setattr(team, "name", "Mercury")
+        setattr(team, "location", "FTW")
+
+
+        self.logger.info("Getting Template")
+        self.logger.debug("Template File: " + self.config.template_file)
+        templateLoader = jinja2.FileSystemLoader(searchpath="tfsrep/templates")
+        templateEnv = jinja2.Environment(loader=templateLoader)
+        template = templateEnv.get_template(self.config.template_file)
+        return template
+
+
+    def render_template(self, template, assets):
+        self.logger.info('Render Template')
+        output_text = template.render(team=assets.team)
+        return output_text
+
+    def save_template(self, text):
+        self.logger.info('Save Template')
+        with open("www/index.html", "w") as f:
+            f.write(text)
+
+        self.logger.info('Save Complete')
+
+    def generate_page(self):
+        self.logger.info('Generating Page')
+        assets = Assets(self.config, self.logger).generate(self.get_reports())
+        text = self.render_template(self.get_template(), assets)
+        self.save_template(text)
+
     def close_handler(self):
         for handler in self.logger.handlers:
             handler.close()
@@ -64,6 +100,7 @@ class TFSReports:
 
     def get_reports(self):
         reports = ReportResults(self.config, self.logger)
+        return reports
 
     def close(self):
         self.close_handler()
