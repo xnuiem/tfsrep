@@ -1,9 +1,6 @@
 import logging, os
-
-from pprint import pprint
-
-from tfsrep.lib.tfs_link import TFSData
 from tfsrep.lib.error import InvalidUsage
+from tfsrep.lib.report_results import ReportResults
 
 
 class TFSReports:
@@ -65,10 +62,8 @@ class TFSReports:
             handler.close()
             self.logger.removeHandler(handler)
 
-    def get_data(self):
-        tfs_data_obj = TFSData(self.config, self.logger)
-        epics = tfs_data_obj.get_epics()
-        pprint(epics)
+    def get_reports(self):
+        reports = ReportResults(self.config, self.logger)
 
     def close(self):
         self.close_handler()

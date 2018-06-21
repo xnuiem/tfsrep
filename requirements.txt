@@ -3,6 +3,6 @@ coverage
 ddt
 xmlrunner
 requests-ntlm
-redis
+jinja2
 dohq-tfs
 cassandra-driver

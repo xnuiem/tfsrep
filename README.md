@@ -22,6 +22,19 @@ python main.py
 ```
 
 ## <a name="configuration-optinos"></a>Configuration Options
+### Config.py
+
+#### logging_level
+DEBUG/INFO/WARN/ERROR logging levels
+
+#### logging_file
+Point to a file, full path is best, to log to a file instead of stdout
+
+#### field_map
+Mapping the fields from VSTS into the data object
+
+
+
 ### Environment Variables
 Defaults are (<strong>bold</strong>)
 
@@ -44,6 +57,5 @@ Example: "10.10.0.1, 10.10.0.2"
 #### CASSANDRA_KEYSPACE*
 The name of the Cassandra keyspace (<strong>tfsrep</strong>)
 
-
-## <a name="credits"></a>Credits
+# <a name="credits"></a>Credits
 - Ryan C Meinzer

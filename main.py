@@ -8,5 +8,4 @@ if cmd_folder not in sys.path:
 
 from tfsrep import TFSReports
 
-tfsr = TFSReports(config)
-tfsr.get_data()
+tfsr = TFSReports(config).get_reports()

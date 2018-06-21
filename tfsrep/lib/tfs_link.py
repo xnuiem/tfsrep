@@ -1,4 +1,3 @@
-from tfs import TFSAPI
 from tfsrep.lib.session import Session
 from pprint import pprint
 
@@ -9,29 +8,27 @@ class TFSData:
         self.session = Session(config, logger).client
         self.logger = logger
         self.config = config
-
         self.logger.info('TFSData Started')
 
-        self.get_epics()
-
-    def get_epics(self):
-        self.logger.info('Get Epics')
+    def get_items(self, item_type):
+        self.logger.info('Get ' + item_type)
         query = """SELECT
             [System.Id]
         FROM workitems
         WHERE
-            [System.WorkItemType] = 'Epic'
+            [System.WorkItemType] = '""" + item_type + """'
         ORDER BY [System.ChangedDate]"""
+        self.run_query(query)
+        self.close()
+        return self
 
-        return self.run_query(query)
-
-
+    def close(self):
+        self.logger.info('Closing')
+        del self.config
+        del self.logger
+        del self.session
 
     def run_query(self, query):
-        result = self.session.run_wiql(query)
-
-        ids = result.workitem_ids
-        raw = result.result
-        items = result.workitems
-        count = len(result.workitems)
-        return {"ids":ids,"raw":raw,"items":items,"count":count}
+        self.logger.info('Running Query')
+        self.logger.debug(query)
+        self.result = self.session.run_wiql(query)
