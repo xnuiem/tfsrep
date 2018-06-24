@@ -2,23 +2,68 @@
 <html lang="en">
 <head>
 
-  <meta charset="utf-8">
-  <title>Team {{ team.name }} Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
-  <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta charset="utf-8">
+    <title>Team {{ team.name }} Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/tfsrep.css">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <div class="row">
-      <div class="twelve column" style="margin-top: 10%">
-        <h4>Team {{ team.name }} Dashboard</h4>
-
-      </div>
+        <div class="twelve column" style="margin-top: 10%">
+            <h3>Team {{ team.name }} Dashboard</h3>
+        </div>
     </div>
-  </div>
+    <div class="row">
+        <div class="twelve column">
+            <h4>Epics</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="six columns">
+            {{ epics.status_bar_chart }}
+        </div>
+        <div class="six columns">
+            {{ epics.status_box_text }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="twelve column">
+            <h4>Stories</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="twelve column">
+            <h5>Status</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="six columns">
+            {{ stories.status_bar_chart }}
+        </div>
+        <div class="six columns">
+            {{ stories.status_box_text }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="twelve column">
+            <h5>Assigned</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="six columns">
+            {{ stories.assigned_bar_chart }}
+        </div>
+        <div class="six columns">
+            {{ stories.assigned_box_text }}
+        </div>
+    </div>
+</div>
 </body>
 </html>

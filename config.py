@@ -1,6 +1,8 @@
 logging_level = 'DEBUG'
 logging_file = ''
 
+box_color_list = ['#7e9a9a','#f6d8ac','#db9833','#2a6592','#8ec3eb']
+
 
 field_map = {
     "System.State" : {
