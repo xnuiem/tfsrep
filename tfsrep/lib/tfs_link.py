@@ -1,13 +1,14 @@
 from tfsrep.lib.session import Session
+from pprint import pprint
 
-
-class TFSData:
+class TFSLink:
 
     def __init__(self, config, logger):
         self.session = Session(config, logger).client
         self.logger = logger
         self.config = config
-        self.logger.info('TFSData Started')
+        self.logger.info('TFSLink Started')
+        self.result = None
 
     def get_items(self, item_type):
         self.logger.info('Get ' + item_type)

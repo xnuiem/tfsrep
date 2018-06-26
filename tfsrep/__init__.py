@@ -3,7 +3,6 @@ from tfsrep.lib.error import InvalidUsage
 from tfsrep.lib.report_results import ReportResults
 from tfsrep.lib.assets import Assets
 from tfsrep.lib.template import Template
-from pprint import pprint
 
 
 class TFSReports:
@@ -42,6 +41,7 @@ class TFSReports:
         self.config.api_project = os.getenv('API_PROJECT', None)
         self.config.cassandra_keyspace = os.getenv('CASSANDRA_KEYSPACE', 'tfsrep')
         self.config.template_file = os.getenv('TEMPLATE_FILE', 'index.html')
+        self.config.write_info_to_file = int(os.getenv('WRITE_INFO_TO_FILE', 0))
 
         nodes = os.getenv('CASSANDRA_NODES', None)
         if nodes is None:

@@ -1,3 +1,6 @@
+import json
+
+
 class TFSInfo:
 
     def __init__(self, config, logger, data):
@@ -57,3 +60,18 @@ class TFSInfo:
     def close(self):
         del self.logger
         del self.config
+
+
+class CreateJSON:
+
+    def __init__(self, o):
+        self.columns = o.column_counts
+        self.count = o.count
+        self.ids = o.ids
+        self.iterations = o.iteration_counts
+        self.states = o.state_counts
+        if hasattr(o, 'assigned_counts'):
+            self.assigned = o.assigned_counts
+
+    def to_json(self):
+        return json.dumps(self.__dict__)
