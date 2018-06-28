@@ -6,4 +6,7 @@ requests-ntlm
 jinja2
 dohq-tfs
 cassandra-driver
+matplotlib
+ipython
 plotly
+

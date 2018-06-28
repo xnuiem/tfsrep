@@ -10,10 +10,12 @@ class Assets:
         self.logger = logger
         self.data = data
 
+
     def generate(self):
         self.set_team()
-        self.set_epics()
-        self.set_stories()
+        setattr(self, "epics", self.get_boxes(self.data.epics))
+        setattr(self, "stories", self.get_boxes(self.data.stories))
+        setattr(self, "features", self.get_boxes(self.data.features))
         self.close()
         return self
 
@@ -25,80 +27,43 @@ class Assets:
     def set_team(self):
         self.logger.info('Set Team')
         self.logger.debug('Team: ' + self.config.api_project)
-        team = type("team", (), {})
-        team.name = self.config.api_project
+        team = {}
+        team['name'] = self.config.api_project
         setattr(self, "team", team)
 
-    def generate_boxes(self, items):
+    def get_boxes(self, items):
+        parent = {}
+        parent['chart_list'] = []
+        for x in self.config.field_map:
+            d = {}
+            if hasattr(items, self.config.field_map[x]['field_name'] + '_counts'):
+                data = getattr(items, self.config.field_map[x]['field_name'] + '_counts')
+                self.generate_boxes(d, data)
+                parent[self.config.field_map[x]['field_name']] = d
+                parent['chart_list'].append(d['bar_chart'].split('"')[1])
 
+        return parent
 
-        pass
+    def generate_boxes(self, obj, data):
 
-    def generate_bar_chart(self):
-        pass
-
-    def set_epics(self):
-        epics = type("epics", (), {})
-        epics.status_box_text = ''
+        obj['box_text'] = ''
 
         x = []
         y = []
 
         j = 0
-        for key, value in self.data.epics.state_counts.items():
+        for key, value in data.items():
             x.append(key)
             y.append(value)
 
             box = Template(self.config, self.logger)
             box.get("status_box.html")
             box.render(title=key, number=value, background_color=self.config.box_color_list[j])
-            epics.status_box_text = epics.status_box_text + box.text
+            obj['box_text'] = obj['box_text'] + box.text
             j = 0 if j == 4 else j + 1
 
-        epics.status_bar_chart = offline.plot([go.Bar(x=x, y=y)], output_type='div', include_plotlyjs=False,
-                                              show_link=False)
-
-        setattr(self, "epics", epics)
-
-    def set_stories(self):
-        stories = type("stories", (), {})
-        stories.status_box_text = ''
-
-        x = []
-        y = []
-
-        j = 0
-        for key, value in self.data.stories.state_counts.items():
-            x.append(key)
-            y.append(value)
-
-            box = Template(self.config, self.logger)
-            box.get("status_box.html")
-            box.render(title=key, number=value, background_color=self.config.box_color_list[j])
-            stories.status_box_text = stories.status_box_text + box.text
-            j = 0 if j == 4 else j + 1
-
-        stories.status_bar_chart = offline.plot([go.Bar(x=x, y=y)], output_type='div', include_plotlyjs=False,
-                                              show_link=False)
+        obj['bar_chart'] = offline.plot([go.Bar(x=x, y=y)], output_type='div', validate=False, show_link=False, auto_open=False, include_plotlyjs=False)
 
 
-        stories.assigned_box_text = ''
-        x = []
-        y = []
+        return obj
 
-        j = 0
-        for key, value in self.data.stories.assigned_counts.items():
-            x.append(key)
-            y.append(value)
-
-            box = Template(self.config, self.logger)
-            box.get("status_box.html")
-            box.render(title=key, number=value, background_color=self.config.box_color_list[j])
-            stories.assigned_box_text = stories.assigned_box_text + box.text
-            j = 0 if j == 4 else j + 1
-
-        stories.assigned_bar_chart = offline.plot([go.Bar(x=x, y=y)], output_type='div', include_plotlyjs=False,
-                                                show_link=False)
-
-
-        setattr(self, "stories", stories)

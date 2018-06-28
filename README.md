@@ -11,9 +11,14 @@ Written with Python 3.6
 
 # Usage
 ## <a name="installation"></a>Installation
-Install the modules
+Install the modules for Python
 ```text
  pip install -r requirements.txt
+```
+
+You also need to install the modules for React
+```text
+npm install --prefix ./www/js --save react react-dom react-data-grid
 ```
 
 ## <a name="quick-start"></a>Quick Start

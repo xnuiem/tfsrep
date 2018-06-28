@@ -3,67 +3,113 @@
 <head>
 
     <meta charset="utf-8">
-    <title>Team {{ team.name }} Dashboard</title>
+    <title>Team {{ assets.team['name'] }} Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/skeleton.css">
     <link rel="stylesheet" href="css/tfsrep.css">
+    <link rel="stylesheet" href="css/skeleton-tabs.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="js/skeleton-tabs.js"></script>
 
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="twelve column" style="margin-top: 10%">
-            <h3>Team {{ team.name }} Dashboard</h3>
+            <h3>Team {{ assets.team['name'] }} Dashboard</h3>
         </div>
     </div>
     <div class="row">
         <div class="twelve column">
-            <h4>Epics</h4>
+
+            <ul class="tab-nav">
+                <li>
+                    <a class="button active" href="#epics">Epics</a>
+                </li>
+                <li>
+                    <a class="button" href="#features">Features</a>
+                </li>
+                <li>
+                    <a class="button" href="#stories">Stories</a>
+                </li>
+            </ul>
+
         </div>
     </div>
-    <div class="row">
-        <div class="six columns">
-            {{ epics.status_bar_chart }}
-        </div>
-        <div class="six columns">
-            {{ epics.status_box_text }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="twelve column">
-            <h4>Stories</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="twelve column">
-            <h5>Status</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="six columns">
-            {{ stories.status_bar_chart }}
-        </div>
-        <div class="six columns">
-            {{ stories.status_box_text }}
-        </div>
-    </div>
+    <script>
+        epics = {{ assets.epics['chart_list'] }};
+        features = {{ assets.features['chart_list'] }};
+        stories = {{ assets.stories['chart_list'] }};
+    </script>
+
     <div class="row">
         <div class="twelve column">
-            <h5>Assigned</h5>
+            <div class="tab-content">
+                <div class="tab-pane active" id="epics">
+
+                    {% for key,value in assets.epics.items() %}
+                    {% if key != 'chart_list' %}
+                        <div class="row">
+                            <div class="twelve column">
+                                <h5>{{ key.title() }}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="six columns">
+                                {{ value['bar_chart'] }}
+                            </div>
+                            <div class="six columns">
+                                {{ value['box_text'] }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}</div>
+                <div class="tab-pane" id="features">
+                    {% for key,value in assets.features.items() %}
+                    {% if key != 'chart_list' %}
+                    <div class="row">
+                        <div class="twelve column">
+                            <h5>{{ key.title() }}</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="six columns">
+                            {{ value['bar_chart'] }}
+                        </div>
+                        <div class="six columns">
+                            {{ value['box_text'] }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}</div>
+                <div class="tab-pane" id="stories">
+                    {% for key,value in assets.stories.items() %}
+                    {% if key != 'chart_list' %}
+                    <div class="row">
+                        <div class="twelve column">
+                            <h5>{{ key.title() }}</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="six columns">
+                            {{ value['bar_chart'] }}
+                        </div>
+                        <div class="six columns">
+                            {{ value['box_text'] }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}</div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="six columns">
-            {{ stories.assigned_bar_chart }}
-        </div>
-        <div class="six columns">
-            {{ stories.assigned_box_text }}
-        </div>
-    </div>
+
+
+
+
 </div>
 </body>
 </html>

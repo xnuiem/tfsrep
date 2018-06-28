@@ -3,6 +3,7 @@ from tfsrep.lib.error import InvalidUsage
 from tfsrep.lib.report_results import ReportResults
 from tfsrep.lib.assets import Assets
 from tfsrep.lib.template import Template
+from pprint import pprint
 
 
 class TFSReports:
@@ -66,7 +67,10 @@ class TFSReports:
 
         page = Template(self.config, self.logger)
         page.get(self.config.template_file)
-        page.render(team=assets.team, epics=assets.epics, stories=assets.stories)
+
+        #pprint(assets.stories['chart_list']
+
+        page.render(assets=assets)
         page.save()
 
     def close_handler(self):
